@@ -1,15 +1,12 @@
 module.exports = (BlogRepository) => {
 
-    const getAllBlog = () => {
-        return BlogRepository.getAllBlog()
-        .select([
-            "-__v"
-        ]);
+    const getAllBlog = (query) => {
+        const page = query.p < 0 ? 0 : query.p;
+        return BlogRepository.getAll({ page });
     }
 
-    const getBlogByAuthor = (author) => {
-        const blog = BlogRepository.getAllBlog().where("author", author);
-        return blog.length > 0 ? blog : "Author not found";
+    const getAuthorBlog = (author) => {
+        return BlogRepository.getByAuthor(author);
     }
 
     const createBlog = (blogData) => {
@@ -19,7 +16,7 @@ module.exports = (BlogRepository) => {
             created_ts: current_ts,
             updated_ts: current_ts
         }
-        return BlogRepository.insertBlog(blogData);
+        return BlogRepository.create(blogData);
     }
 
     const updateBlog = (id, data) => {
@@ -28,12 +25,12 @@ module.exports = (BlogRepository) => {
     }
 
     const deleteBlog = (id) => {
-        return BlogRepository.remove(id,);
+        return BlogRepository.deleteById(id);
     }
 
     return {
         getAllBlog,
-        getBlogByAuthor,
+        getAuthorBlog,
         createBlog,
         updateBlog,
         deleteBlog

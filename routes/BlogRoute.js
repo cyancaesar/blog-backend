@@ -8,15 +8,19 @@ module.exports = (server, BlogController, BlogValidator) => {
         console.log("[Route setup] /blog ");
 
         // Route setup
-        router.get("/", BlogController.blog_index);
+        router.get(
+            "/",
+            BlogValidator.blog_index,
+            BlogController.blog_index
+        );
         router.post(
             "/",
-            BlogValidator.blog_create,
+            // BlogValidator.blog_create,
             BlogController.blog_create
         );
         router.get("/:author", BlogController.blog_get_by_author);
         router.put(
-            "/:id",
+            "/:id?",
             BlogValidator.blog_update,
             BlogController.blog_update
         );

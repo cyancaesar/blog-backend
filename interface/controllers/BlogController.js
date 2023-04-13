@@ -8,9 +8,12 @@ module.exports = (BlogService) => {
      */
 
     const blog_index = async (req, res) => {
-        const blogs = await BlogService.getAllBlog();
-
-        res.json({ message: blogs });
+        try {
+            const blog = await BlogService.getAllBlog(req.query);
+            res.json({ ...blog });
+        } catch (err) {
+            res.status(400).json(err);
+        }
     }
 
     /**
@@ -20,10 +23,13 @@ module.exports = (BlogService) => {
      */
 
     const blog_create = async (req, res) => {
-        const result = await BlogService.createBlog(req.body);
-        console.log(result);
-
-        res.status(201).json({ message: "check terminal" });
+        try {
+            const result = await BlogService.createBlog(req.body);
+            return res.status(201).json({ ...result });
+        }
+        catch (err) {
+            return res.status(400).json(err);
+        }
     }
 
     /**
@@ -34,9 +40,12 @@ module.exports = (BlogService) => {
 
     const blog_get_by_author = async (req, res) => {
         const { author } = req.params;
-        let blog = await BlogService.getBlogByAuthor(author);
-
-        return res.json({ message: blog });
+        try {
+            let blog = await BlogService.getAuthorBlog(author);
+            return res.json({ ...blog });
+        } catch (err) {
+            res.status(400).json(err);
+        }
     }
 
     /**
@@ -47,10 +56,13 @@ module.exports = (BlogService) => {
 
     const blog_update = async (req, res) => {
         const { id } = req.params;
-        const result = await BlogService.updateBlog(id, req.body);
-        console.log(result);
+        try {
+            const result = await BlogService.updateBlog(id, req.body);
+            res.json({ message: result });
+        } catch (err) {
+            res.status(400).json(err);
+        }
 
-        res.json({ message: "updated" });
     }
 
     /**
@@ -61,11 +73,12 @@ module.exports = (BlogService) => {
 
     const blog_delete = async (req, res) => {
         const { id } = req.params;
-
-        const result = await BlogService.deleteBlog(id);
-        if (!result) return res.json({ message: "Blog doesn't exist" })
-
-        return res.json({ message: "deleted" });
+        try {
+            const result = await BlogService.deleteBlog(id);
+            return res.json({ message: result });
+        } catch (err) {
+            return res.status(400).json(err);
+        }
 
     }
 
