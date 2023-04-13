@@ -8,5 +8,5 @@ module.exports = () => {
         DB_HOSTNAME: process.env.DB_HOSTNAME,
         DB_PORT: process.env.DB_PORT,
         DB_NAME: process.env.DB_NAME
-    }
-}
+    };
+};

@@ -1,11 +1,13 @@
-const { Model } = require("mongoose");
+/**
+ * @typedef {import("mongoose").Model} Model
+ */
 
 /**
  * 
  * @param {Model} User 
 */
-module.exports = (User) => {
 
+const UserRepository = (User) => {
     const find = async (query, projection) => {
         let queryResult;
         if (projection) {
@@ -15,7 +17,7 @@ module.exports = (User) => {
             queryResult = await User.find(query);
         }
         return queryResult;
-    }
+    };
 
     const findById = async (id, projection) => {
         if (projection) {
@@ -23,20 +25,20 @@ module.exports = (User) => {
         } else {
             return User.findById(id).exec();
         }
-    }
+    };
 
     const update = async (id, data) => {
         return User.findByIdAndUpdate(id, data).exec();
-    }
+    };
 
     const create = async (data) => {
         let newUser = new User(data);
         return await newUser.save();
-    }
+    };
 
     const remove = async (data) => {
         User.deleteOne(data);
-    }
+    };
 
     return {
         find,
@@ -44,5 +46,7 @@ module.exports = (User) => {
         create,
         remove,
         findById
-    }
+    };
 };
+
+module.exports = UserRepository;

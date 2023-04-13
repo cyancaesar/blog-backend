@@ -28,5 +28,5 @@ module.exports = (Validator) => {
         blog_update,
         blog_create,
         blog_delete
-    }
-}
+    };
+};

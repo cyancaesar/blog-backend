@@ -7,14 +7,14 @@ module.exports = (config) => {
     const cookieParser = require("cookie-parser");
 
     const setup = () => {
-        console.log("Middlewares setup...")
+        console.log("Middlewares setup...");
         app.use(express.json());
         app.use(cookieParser());
         app.use(cors({
             origin: "http://localhost:3000",
             credentials: true
         }));
-    }
+    };
 
     const setRoute = (path, router) => app.use(path, router);
 
@@ -23,7 +23,7 @@ module.exports = (config) => {
         console.log(`Server started listening on ::${config.PORT_NUM}`);
         const server = http.createServer(app);
         server.listen(config.PORT_NUM);
-    }
+    };
 
-    return { start, setup, setRoute }
-}
+    return { start, setup, setRoute };
+};

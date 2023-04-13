@@ -14,8 +14,8 @@ module.exports = () => {
             if (errors.isEmpty()) return next();
 
             res.status(400).json({ message: errors.array() });
-        }
-    }
+        };
+    };
 
     return validate;
-}
+};

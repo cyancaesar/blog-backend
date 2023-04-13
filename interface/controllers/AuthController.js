@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 module.exports = () => {
     
     auth_login = async (req, res) => {
@@ -22,7 +24,7 @@ module.exports = () => {
         // });
     
         // res.json({ accessToken });
-    }
+    };
     
     auth_refresh = (req, res) => {
         // const token = req.cookies["refresh_token"];
@@ -40,7 +42,7 @@ module.exports = () => {
         // const { user, role } = jwt.decode(token);
         // let accessToken = tokenGenerator.generateAccessToken({ user, role });
         // return res.json({ accessToken });
-    }
+    };
     
     auth_logout = async (req, res) => {
         // const token = req.cookies["refresh_token"];
@@ -51,11 +53,11 @@ module.exports = () => {
         // await Token.deleteOne({ token: result.token });
     
         // return res.json("logout successful");
-    }
+    };
 
     return {
         auth_login,
         auth_refresh,
         auth_logout
-    }
-}
+    };
+};

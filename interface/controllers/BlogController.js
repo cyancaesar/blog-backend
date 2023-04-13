@@ -14,7 +14,7 @@ module.exports = (BlogService) => {
         } catch (err) {
             res.status(400).json(err);
         }
-    }
+    };
 
     /**
      * 
@@ -30,7 +30,7 @@ module.exports = (BlogService) => {
         catch (err) {
             return res.status(400).json(err);
         }
-    }
+    };
 
     /**
      * 
@@ -46,7 +46,7 @@ module.exports = (BlogService) => {
         } catch (err) {
             res.status(400).json(err);
         }
-    }
+    };
 
     /**
      * 
@@ -63,7 +63,7 @@ module.exports = (BlogService) => {
             res.status(400).json(err);
         }
 
-    }
+    };
 
     /**
      * 
@@ -80,7 +80,7 @@ module.exports = (BlogService) => {
             return res.status(400).json(err);
         }
 
-    }
+    };
 
     return {
         blog_index,
@@ -88,5 +88,5 @@ module.exports = (BlogService) => {
         blog_get_by_author,
         blog_update,
         blog_delete
-    }
-}
+    };
+};

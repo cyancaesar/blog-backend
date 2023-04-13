@@ -1,10 +1,15 @@
-const { Model } = require("mongoose");
+/**
+ * @typedef {import("mongoose").Model} Model
+ */
+
 /**
  * 
  * @param {Model} Blog 
- */
+*/
 
 module.exports = (Blog) => {
+
+    const DOCUMENTS_PER_PAGE = 5;
 
     const getAll = ({ page, projection } = {}) => {
         return new Promise((resolve, reject) => {
@@ -18,14 +23,14 @@ module.exports = (Blog) => {
                         message: docs
                     });
                 })
-                .catch(err => {
+                .catch(() => {
                     return reject({
                         status: false,
                         message: "Query find error."
                     });
                 });
-        })
-    }
+        });
+    };
 
     const getByAuthor = (author) => {
         return new Promise((resolve, reject) => {
@@ -44,30 +49,30 @@ module.exports = (Blog) => {
                         message: docs
                     });
                 })
-                .catch(err => {
+                .catch(() => {
                     return reject({
                         status: false,
                         message: "An error has occured."
                     });
                 });
         });
-    }
+    };
 
     const create = (data) => {
         return new Promise((resolve, reject) => {
-            Blog.create(data).then(doc => {
+            Blog.create(data).then(() => {
                 resolve({
                     status: true,
                     message: "Document saved"
                 });
-            }).catch((err) => {
+            }).catch(() => {
                 reject({
                     status: false,
                     message: "An error has occured."
                 });
-            })
+            });
         });
-    }
+    };
 
     const update = (id, data) => {
         return new Promise((resolve, reject) => {
@@ -78,26 +83,26 @@ module.exports = (Blog) => {
                         message: "Document not found."
                     });
                 doc.set(data);
-                doc.save().then(doc => {
+                doc.save().then(() => {
                     return resolve({
                         status: true,
                         message: { ...data }
                     });
-                }).catch(err => {
+                }).catch(() => {
                     return reject({
                         status: false,
                         message: "Unable to save the document"
                     });
-                })
+                });
 
-            }).catch(err => {
+            }).catch(() => {
                 return reject({
                     status: false,
                     message: "An error has occured."
                 });
-            })
+            });
         });
-    }
+    };
 
     const deleteById = (id) => {
         return new Promise((resolve, reject) => {
@@ -111,14 +116,14 @@ module.exports = (Blog) => {
                     status: true,
                     message: "Document deleted"
                 });
-            }).catch(err => {
+            }).catch(() => {
                 return reject({
                     status: false,
                     message: "Document not found"
                 });
             });
         });
-    }
+    };
 
     return {
         getAll,
@@ -126,6 +131,6 @@ module.exports = (Blog) => {
         deleteById,
         create,
         update
-    }
+    };
 
-}
+};

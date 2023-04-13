@@ -16,14 +16,14 @@ module.exports = (() => {
         // Not found redirection
         console.log("[Route setup] *");
         container.cradle.server.setRoute("*", (req, res) => {
-            res.status(404).json({ message: "requested url doesn't exist" })
-        })
-    }
+            res.status(404).json({ message: "requested url doesn't exist" });
+        });
+    };
 
     return {
         bootstrap: (container) => {
             // Database creation
-            container.cradle.db.connect().then(_ => {
+            container.cradle.db.connect().then(() => {
                 console.log("Database connected");
                 // Setup express app middleware then resolve all the routes
                 container.cradle.server.setup();
@@ -32,5 +32,5 @@ module.exports = (() => {
                 container.cradle.server.start();
             });
         }
-    }
+    };
 })();

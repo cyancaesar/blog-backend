@@ -19,8 +19,7 @@ module.exports = (server, AuthController, UserController) => {
         router.put("/users", UserController.user_change_password);
 
         server.setRoute(routePath, router);
-    }
+    };
 
-    return { setup }
+    return { setup };
 };
-

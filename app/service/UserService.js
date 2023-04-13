@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 module.exports = (UserRepository) => {
 
     // Refactor this service layer to correspond
@@ -9,7 +11,7 @@ module.exports = (UserRepository) => {
         if (isExist.length) return {
             status: "FAILED",
             message: "USER EXIST"
-        }
+        };
         await UserRepository.create({
             username,
             password,
@@ -18,8 +20,8 @@ module.exports = (UserRepository) => {
         return {
             status: "SUCCESS",
             message: "USER CREATED"
-        }
-    }
+        };
+    };
 
     const getAllUser = async () => {
         const users = await UserRepository.find({}, ["username"]);
@@ -27,38 +29,38 @@ module.exports = (UserRepository) => {
             return {
                 id: user._id,
                 username: user.username
-            }
+            };
         });
         return {
             status: "SUCCESS",
             message: formatted
-        }
-    }
+        };
+    };
 
     const changePassword = async (data) => {
         const response = {
             status: false,
             message: ""
-        }
+        };
         const { id, newPassword, oldPassword } = data;
 
         const validateOldPassword = await UserRepository.findById(id, ["password"]);
         if (validateOldPassword.password === oldPassword) {
             const updated = await UserRepository.update(id, { password: newPassword });
             response.status = true;
-            response.message = "PASSWORD CHANGED"
+            response.message = "PASSWORD CHANGED";
         } else {
             response.status = false;
-            response.message = "OLD PASSWORD DOESN'T MATCH"
+            response.message = "OLD PASSWORD DOESN'T MATCH";
         }
 
-        return response
-    }
+        return response;
+    };
 
     return {
         getAllUser,
         createUser,
         changePassword
-    }
+    };
 
-}
+};

@@ -15,7 +15,7 @@ module.exports = (server, BlogController, BlogValidator) => {
         );
         router.post(
             "/",
-            // BlogValidator.blog_create,
+            BlogValidator.blog_create,
             BlogController.blog_create
         );
         router.get("/:author", BlogController.blog_get_by_author);
@@ -31,7 +31,7 @@ module.exports = (server, BlogController, BlogValidator) => {
         );
 
         server.setRoute(routePath, router);
-    }
+    };
 
-    return { setup }
+    return { setup };
 };
