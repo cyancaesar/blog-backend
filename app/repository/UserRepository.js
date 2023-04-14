@@ -50,7 +50,6 @@ module.exports = (User) => {
         return new Promise((resolve, reject) => {
             User.findOne({})
                 .where({ username })
-                .select("username")
                 .exec()
                 .then(doc => {
                     if (!doc)
