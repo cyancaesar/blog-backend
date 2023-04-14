@@ -13,6 +13,11 @@ module.exports = (server, AuthController, AuthValidator) => {
             AuthValidator.auth_login,
             AuthController.auth_login
         );
+        router.post(
+            "/logout",
+            AuthValidator.auth_logout,
+            AuthController.auth_logout
+        );
 
         server.setRoute(routePath, router);
     };

@@ -9,11 +9,14 @@ module.exports = () => {
                 }
             } else
                 await validations.run(req);
-            
+
             const errors = validationResult(req);
             if (errors.isEmpty()) return next();
-
-            res.status(400).json({ ...errors.array() });
+            let error = errors.errors.map(o => o.msg);
+            res.status(400).json({
+                status: false,
+                message: { ...error }
+            });
         };
     };
 

@@ -36,5 +36,30 @@ module.exports = (Token) => {
         });
     };
 
-    return { create };
+    const deleteToken = (token) => {
+        return new Promise((resolve, reject) => {
+            Token.deleteMany({ token })
+                .then(doc => {
+                    if (!doc.deletedCount)
+                        return reject({
+                            status: false,
+                            message: "Couldn't delete token: not found."
+                        });
+                    return resolve({
+                        status: true,
+                        message: "Token deleted."
+                    });
+                }).catch(() => {
+                    return reject({
+                        status: false,
+                        message: "Error while trying to delete token."
+                    });
+                });
+        });
+    };
+
+    return {
+        create,
+        deleteToken
+    };
 };

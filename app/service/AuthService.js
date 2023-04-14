@@ -65,5 +65,12 @@ module.exports = (UserRepository, TokenRepository) => {
 
     };
 
-    return { auth_login };
+    const auth_logout = ({ refreshToken }) => {
+        return TokenRepository.deleteToken(refreshToken);
+    };
+
+    return {
+        auth_login,
+        auth_logout
+    };
 };

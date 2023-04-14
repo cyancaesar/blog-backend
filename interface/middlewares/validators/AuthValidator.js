@@ -1,6 +1,7 @@
 module.exports = (Validator) => {
 
-    const { body } = require("express-validator");
+    const { body, cookie } = require("express-validator");
+    const { verifyRefreshToken } = require("../../../utils/jwtUtils");
 
     const auth_login = Validator([
         body("username")
@@ -15,5 +16,15 @@ module.exports = (Validator) => {
             .isLength({ max: 64 }).withMessage("password must be less than 64 characters")
     ]);
 
-    return { auth_login };
+    const auth_logout = Validator([
+        cookie("refreshToken")
+            .exists().withMessage("Missing refresh token")
+            .notEmpty().withMessage("Missing refresh token")
+            .custom(verifyRefreshToken)
+    ]);
+
+    return {
+        auth_login,
+        auth_logout
+    };
 };

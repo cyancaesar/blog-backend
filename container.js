@@ -24,7 +24,8 @@ container.loadModules([
     "app/repository/*.js",
     "interface/controllers/*.js",
     "routes/*.js",
-    "interface/middlewares/validators/*.js"
+    "interface/middlewares/validators/*.js",
+    "interface/middlewares/*.js"
 ]);
 
 module.exports = container;
