@@ -13,7 +13,7 @@ module.exports = () => {
             const errors = validationResult(req);
             if (errors.isEmpty()) return next();
 
-            res.status(400).json({ message: errors.array() });
+            res.status(400).json({ ...errors.array() });
         };
     };
 

@@ -7,46 +7,104 @@
  * @param {Model} User 
 */
 
-const UserRepository = (User) => {
-    const find = async (query, projection) => {
-        let queryResult;
-        if (projection) {
-            queryResult = await User.find(query, projection);
-        }
-        else {
-            queryResult = await User.find(query);
-        }
-        return queryResult;
+module.exports = (User) => {
+
+    const create = (data) => {
+        return new Promise((resolve, reject) => {
+            User.create(data).then(() => {
+                return resolve({
+                    status: true,
+                    message: "User created."
+                });
+            }).catch(() => {
+                return reject({
+                    status: true,
+                    message: "Unable to create user."
+                });
+            });
+        });
     };
 
-    const findById = async (id, projection) => {
-        if (projection) {
-            return User.findById(id, projection).exec();
-        } else {
-            return User.findById(id).exec();
-        }
+    const deleteById = (id) => {
+        return new Promise((resolve, reject) => {
+            User.findByIdAndDelete(id).then(doc => {
+                if (!doc)
+                    return reject({
+                        status: false,
+                        message: "Can't delete User: not found."
+                    });
+                return resolve({
+                    status: true,
+                    message: "User deleted."
+                });
+            }).catch(() => {
+                return reject({
+                    status: true,
+                    message: "Unable to delete user."
+                });
+            });
+        });
     };
 
-    const update = async (id, data) => {
-        return User.findByIdAndUpdate(id, data).exec();
+    const getByUsername = (username) => {
+        return new Promise((resolve, reject) => {
+            User.findOne({})
+                .where({ username })
+                .select("username")
+                .exec()
+                .then(doc => {
+                    if (!doc)
+                        return reject({
+                            status: true,
+                            message: "User not found."
+                        });
+                    return resolve({
+                        status: true,
+                        message: doc
+                    });
+                }).catch(() => {
+                    return reject({
+                        status: false,
+                        message: "Unable to find user."
+                    });
+                });
+        });
     };
 
-    const create = async (data) => {
-        let newUser = new User(data);
-        return await newUser.save();
-    };
-
-    const remove = async (data) => {
-        User.deleteOne(data);
+    const update = (id, data) => {
+        return new Promise((resolve, reject) => {
+            User.findOne({ _id: id }).then(doc => {
+                if (!doc)
+                    return reject({
+                        status: false,
+                        message: "Update Error: User not found."
+                    });
+                doc.set(data);
+                doc.save().then(() => {
+                    return resolve({
+                        status: true,
+                        message: "User updated."
+                    });
+                }).catch(() => {
+                    return reject({
+                        status: false,
+                        message: "Unable to update user."
+                    });
+                });
+            }).catch(() => {
+                return reject({
+                    status: false,
+                    message: "Error while updating user."
+                });
+            });
+        });
     };
 
     return {
-        find,
-        update,
         create,
-        remove,
-        findById
+        deleteById,
+        getByUsername,
+        update
     };
-};
 
-module.exports = UserRepository;
+};

@@ -1,66 +1,46 @@
-/* eslint-disable */
-
 module.exports = (UserRepository) => {
 
-    // Refactor this service layer to correspond
-    // to SRP
+    const crypto = require("crypto");
 
     const createUser = async (data) => {
-        const { username, password, role = "guest" } = data;
-        const isExist = await UserRepository.find({ username });
-        if (isExist.length) return {
-            status: "FAILED",
-            message: "USER EXIST"
-        };
-        await UserRepository.create({
-            username,
-            password,
-            role
-        });
-        return {
-            status: "SUCCESS",
-            message: "USER CREATED"
-        };
-    };
-
-    const getAllUser = async () => {
-        const users = await UserRepository.find({}, ["username"]);
-        const formatted = users.map(user => {
-            return {
-                id: user._id,
-                username: user.username
-            };
-        });
-        return {
-            status: "SUCCESS",
-            message: formatted
-        };
-    };
-
-    const changePassword = async (data) => {
-        const response = {
-            status: false,
-            message: ""
-        };
-        const { id, newPassword, oldPassword } = data;
-
-        const validateOldPassword = await UserRepository.findById(id, ["password"]);
-        if (validateOldPassword.password === oldPassword) {
-            const updated = await UserRepository.update(id, { password: newPassword });
-            response.status = true;
-            response.message = "PASSWORD CHANGED";
-        } else {
-            response.status = false;
-            response.message = "OLD PASSWORD DOESN'T MATCH";
+        // Check if username already exists
+        try {
+            await UserRepository.getByUsername(data.username);
+            return Promise.reject({
+                status: false,
+                message: "Username already taken"
+            });
+        } catch (err) {
+            if (!err.status) {
+                return Promise.reject("Unable to create the user");
+            }
         }
+        // Hash the password
+        const password = crypto.createHash("sha256")
+            .update(data.password)
+            .digest("hex");
+        
+        // Get the only needed fields, ignore the rest..
+        data = {
+            username: data.username,
+            password
+        };
 
-        return response;
+        return UserRepository.create(data);
+    };
+
+    const deleteUser = (id) => {
+        return UserRepository.deleteById(id);
+    };
+
+    const updateUser = (id, data) => {
+        return UserRepository.update(id, data);
     };
 
     return {
-        getAllUser,
         createUser,
-        changePassword
+        deleteUser,
+        updateUser
     };
 
 };
