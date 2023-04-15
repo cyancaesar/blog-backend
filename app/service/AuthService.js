@@ -3,7 +3,7 @@ module.exports = (UserRepository, TokenRepository) => {
     // refactor and clean this mess
 
     const crypto = require("crypto");
-    const { genAccessToken, genRefreshToken } = require("./../../utils/jwtUtils");
+    const { genAccessToken, genRefreshToken, decodeToken } = require("./../../utils/jwtUtils");
 
     const auth_login = async (data) => {
         let user;
@@ -69,8 +69,38 @@ module.exports = (UserRepository, TokenRepository) => {
         return TokenRepository.deleteToken(refreshToken);
     };
 
+    const getRefreshToken = async ({ refreshToken }) => {
+        const decoded = decodeToken(refreshToken);
+        const payload = {
+            sub: decoded.sub,
+            username: decoded.username,
+            role: decoded.role
+        };
+        const [newAccessToken, newRefreshToken] = [genAccessToken(payload), genRefreshToken(payload)];
+
+        try {
+            await TokenRepository.create({
+                userId: decoded.sub,
+                token: newRefreshToken
+            });
+            return Promise.resolve({
+                status: true,
+                message: {
+                    accessToken: newAccessToken,
+                    refreshToken: newRefreshToken
+                }
+            });
+        } catch (err) {
+            return Promise.reject({
+                status: false,
+                message: err
+            });
+        }
+    };
+
     return {
         auth_login,
-        auth_logout
+        auth_logout,
+        getRefreshToken
     };
 };

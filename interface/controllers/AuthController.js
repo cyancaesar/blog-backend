@@ -28,8 +28,22 @@ module.exports = (AuthService) => {
         }
     };
 
+    const auth_refresh = async (req, res) => {
+        try {
+            const response = await AuthService.getRefreshToken(req.cookies);
+            res.cookie("refreshToken", response.message.refreshToken, {
+                httpOnly: true,
+                maxAge: 1 * 24 * 60 * 60 * 1000
+            });
+            res.json({ ...response });
+        } catch (err) {
+            res.status(400).json(err);
+        }
+    };
+
     return {
         auth_login,
-        auth_logout
+        auth_logout,
+        auth_refresh
     };
 };

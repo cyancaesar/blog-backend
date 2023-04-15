@@ -16,15 +16,15 @@ module.exports = (Validator) => {
             .isLength({ max: 64 }).withMessage("password must be less than 64 characters")
     ]);
 
-    const auth_logout = Validator([
+    const auth_logout_refresh = Validator([
         cookie("refreshToken")
-            .exists().withMessage("Missing refresh token")
-            .notEmpty().withMessage("Missing refresh token")
+            .exists().withMessage("Missing refresh token").bail()
+            .notEmpty().withMessage("Missing refresh token").bail()
             .custom(verifyRefreshToken)
     ]);
 
     return {
         auth_login,
-        auth_logout
+        auth_logout_refresh
     };
 };

@@ -15,8 +15,14 @@ module.exports = (server, AuthController, AuthValidator) => {
         );
         router.post(
             "/logout",
-            AuthValidator.auth_logout,
+            AuthValidator.auth_logout_refresh,
             AuthController.auth_logout
+        );
+
+        router.get(
+            "/refresh",
+            AuthValidator.auth_logout_refresh,
+            AuthController.auth_refresh
         );
 
         server.setRoute(routePath, router);
