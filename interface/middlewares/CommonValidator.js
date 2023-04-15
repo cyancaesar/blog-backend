@@ -1,7 +1,7 @@
 module.exports = (Validator) => {
 
     const { header } = require("express-validator");
-    const { verifyRefreshToken } = require("./../../utils/jwtUtils");
+    const { verifyAccessToken, decodeToken } = require("./../../utils/jwtUtils");
 
     const token_verification = Validator([
         header("Authorization")
@@ -16,7 +16,12 @@ module.exports = (Validator) => {
             }).withMessage("Wrong token format not [Bearer :token]").bail()
             .customSanitizer(value => value.split(" ")[1])
             .isJWT().withMessage("Malformed JWT").bail()
-            .custom(verifyRefreshToken)
+            .custom(verifyAccessToken).bail()
+            .custom((value, { req }) => {
+                let token = decodeToken(value);
+                req.user = token;
+                return true;
+            })
     ]);
 
     return { token_verification };

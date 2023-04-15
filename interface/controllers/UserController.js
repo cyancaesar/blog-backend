@@ -11,7 +11,7 @@ module.exports = (UserService) => {
 
     const user_delete = async (req, res) => {
         try {
-            const response = await UserService.deleteUser(req.params.id);
+            const response = await UserService.deleteUser(req.user.sub);
             res.json({ ...response });
         } catch (err) {
             res.status(400).json(err);
@@ -20,7 +20,7 @@ module.exports = (UserService) => {
 
     const user_update = async (req, res) => {
         try {
-            const response = await UserService.updateUser(req.params.id, req.body);
+            const response = await UserService.updateUser(req.user.sub, req.body);
             res.json({ ...response });
         } catch(err) {
             res.status(400).json(err);

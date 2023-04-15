@@ -19,7 +19,7 @@ module.exports = (UserRepository) => {
         const password = crypto.createHash("sha256")
             .update(data.password)
             .digest("hex");
-        
+
         // Get the only needed fields, ignore the rest..
         data = {
             username: data.username,

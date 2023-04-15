@@ -41,3 +41,7 @@ exports.verifyRefreshToken = (token) => {
         });
     });
 };
+
+exports.decodeToken = (token) => {
+    return jwt.decode(token);
+};

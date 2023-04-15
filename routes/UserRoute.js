@@ -1,4 +1,4 @@
-module.exports = (server, UserController, UserValidator) => {
+module.exports = (server, UserController, UserValidator, CommonValidator) => {
     const router = require("express").Router();
 
     const setup = () => {
@@ -16,12 +16,14 @@ module.exports = (server, UserController, UserValidator) => {
 
         router.delete(
             "/:id?",
-            UserValidator.user_delete,
+            CommonValidator.token_verification,
             UserController.user_delete
         );
 
         router.put(
             "/:id?",
+            CommonValidator.token_verification,
+            UserValidator.user_update,
             UserController.user_update
         );
 
