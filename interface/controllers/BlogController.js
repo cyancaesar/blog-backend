@@ -55,14 +55,12 @@ module.exports = (BlogService) => {
      */
 
     const blog_update = async (req, res) => {
-        const { id } = req.params;
         try {
-            const result = await BlogService.updateBlog(id, req.body);
+            const result = await BlogService.updateBlog(req.params.id, req.body);
             res.json({ message: result });
         } catch (err) {
             res.status(400).json(err);
         }
-
     };
 
     /**
@@ -72,14 +70,12 @@ module.exports = (BlogService) => {
      */
 
     const blog_delete = async (req, res) => {
-        const { id } = req.params;
         try {
-            const result = await BlogService.deleteBlog(id);
+            const result = await BlogService.deleteBlog(req.params.id);
             return res.json({ message: result });
         } catch (err) {
             return res.status(400).json(err);
         }
-
     };
 
     return {

@@ -9,7 +9,7 @@ module.exports = (server, BlogController, BlogValidator) => {
 
         // Route setup
         router.get(
-            "/",
+            "/:p?",
             BlogValidator.blog_index,
             BlogController.blog_index
         );

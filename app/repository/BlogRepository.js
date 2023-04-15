@@ -11,13 +11,18 @@ module.exports = (Blog) => {
 
     const DOCUMENTS_PER_PAGE = 5;
 
-    const getAll = ({ page, projection } = {}) => {
+    const getAll = ({ page = 0, projection } = {}) => {
         return new Promise((resolve, reject) => {
             let Query = Blog.find({}).lean();
-            Query = page ? Query.skip(page).limit(DOCUMENTS_PER_PAGE) : Query;
+            Query = Query.skip(page * DOCUMENTS_PER_PAGE).limit(DOCUMENTS_PER_PAGE);
             Query = projection ? Query.select(projection) : Query.select("-__v");
             Query.exec()
                 .then(docs => {
+                    if (!docs.length)
+                        return reject({
+                            status: false,
+                            message: "No more blog found."
+                        });
                     return resolve({
                         status: true,
                         message: docs

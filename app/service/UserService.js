@@ -1,6 +1,6 @@
 module.exports = (UserRepository) => {
 
-    const crypto = require("crypto");
+    const { hash } = require("./../../utils/hashUtils");
 
     const createUser = async (data) => {
         // Check if username already exists
@@ -16,9 +16,7 @@ module.exports = (UserRepository) => {
             }
         }
         // Hash the password
-        const password = crypto.createHash("sha256")
-            .update(data.password)
-            .digest("hex");
+        const password = hash(data.password);
 
         // Get the only needed fields, ignore the rest..
         data = {
@@ -34,6 +32,7 @@ module.exports = (UserRepository) => {
     };
 
     const updateUser = (id, data) => {
+        data.password = hash(data.password); // hash the password
         return UserRepository.update(id, data);
     };
 

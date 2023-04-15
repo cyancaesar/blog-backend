@@ -2,7 +2,7 @@ module.exports = (Validator) => {
     const { body, oneOf, param, query } = require("express-validator");
 
     const blog_index = Validator([
-        query("p").default(0).isNumeric().withMessage("p query parameter must be a number")
+        query("p").default(0).isNumeric().withMessage("p query parameter must be a number").toInt()
     ]);
 
     const blog_update = Validator([

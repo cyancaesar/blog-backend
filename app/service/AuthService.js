@@ -1,8 +1,8 @@
 module.exports = (UserRepository, TokenRepository) => {
 
-    // refactor and clean this mess
+    // refactor and clean this mess.. Later.
 
-    const crypto = require("crypto");
+    const { hash } = require("./../../utils/hashUtils");
     const { genAccessToken, genRefreshToken, decodeToken } = require("./../../utils/jwtUtils");
 
     const auth_login = async (data) => {
@@ -23,7 +23,7 @@ module.exports = (UserRepository, TokenRepository) => {
                 });
         }
 
-        const hashedPassword = crypto.createHash("sha256").update(data.password).digest("hex");
+        const hashedPassword = hash(data.password);
         const correctCredential = (
             user.username === data.username
             && user.password === hashedPassword
