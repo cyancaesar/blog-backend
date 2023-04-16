@@ -65,12 +65,12 @@ module.exports = (Blog) => {
 
     const getById = (_id) => {
         return new Promise((resolve, reject) => {
-            Blog.find({})
-                .where({ _id })
+            Blog.findOne({_id})
                 .select("-__v")
                 .exec()
                 .then(docs => {
-                    if (!docs.length)
+                    console.log(docs);
+                    if (!docs)
                         return reject({
                             status: false,
                             message: "Blog not found."
