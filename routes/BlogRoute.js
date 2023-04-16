@@ -9,16 +9,25 @@ module.exports = (server, BlogController, BlogValidator) => {
 
         // Route setup
         router.get(
-            "/:p?",
+            "/",
             BlogValidator.blog_index,
             BlogController.blog_index
+        );
+        router.get(
+            "/:id",
+            BlogValidator.blog_get_by_id,
+            BlogController.blog_get_by_id
+        );
+        router.get(
+            "/author/:author?",
+            BlogValidator.blog_get_by_author,
+            BlogController.blog_get_by_author
         );
         router.post(
             "/",
             BlogValidator.blog_create,
             BlogController.blog_create
         );
-        router.get("/:author", BlogController.blog_get_by_author);
         router.put(
             "/:id?",
             BlogValidator.blog_update,

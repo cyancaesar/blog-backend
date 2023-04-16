@@ -9,6 +9,10 @@ module.exports = (BlogRepository) => {
         return BlogRepository.getByAuthor(author);
     };
 
+    const getBlog = (id) => {
+        return BlogRepository.getById(id);
+    };
+
     const createBlog = (blogData) => {
         let current_ts = Date.now();
         blogData = {
@@ -31,6 +35,7 @@ module.exports = (BlogRepository) => {
     return {
         getAllBlog,
         getAuthorBlog,
+        getBlog,
         createBlog,
         updateBlog,
         deleteBlog

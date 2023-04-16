@@ -63,6 +63,31 @@ module.exports = (Blog) => {
         });
     };
 
+    const getById = (_id) => {
+        return new Promise((resolve, reject) => {
+            Blog.find({})
+                .where({ _id })
+                .select("-__v")
+                .exec()
+                .then(docs => {
+                    if (!docs.length)
+                        return reject({
+                            status: false,
+                            message: "Blog not found."
+                        });
+                    return resolve({
+                        status: true,
+                        message: docs
+                    });
+                }).catch(() => {
+                    return reject({
+                        status: false,
+                        message: "Error while finding by id"
+                    });
+                });
+        });
+    };
+
     const create = (data) => {
         return new Promise((resolve, reject) => {
             Blog.create(data).then(() => {
@@ -133,6 +158,7 @@ module.exports = (Blog) => {
     return {
         getAll,
         getByAuthor,
+        getById,
         deleteById,
         create,
         update
