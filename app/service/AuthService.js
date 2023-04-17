@@ -6,6 +6,11 @@ module.exports = (UserRepository, TokenRepository) => {
     const { genAccessToken, genRefreshToken, decodeToken } = require("./../../utils/jwtUtils");
 
     const auth_login = async (data) => {
+        // Save and delete remember property
+        // from the data object
+        const remember = data.remember;
+        delete data.remember;
+
         let user;
         try {
             user = await UserRepository.getByUsername(data.username);
@@ -42,6 +47,15 @@ module.exports = (UserRepository, TokenRepository) => {
         };
 
         const [accessToken, refreshToken] = [genAccessToken(payload), genRefreshToken(payload)];
+
+        // If remember me is set
+        // ignore the rest of saving refresh token
+        if (!remember)
+            return Promise.resolve({
+                status: true,
+                message: { accessToken }
+            });
+
         const token = {
             userId: user._id,
             token: refreshToken

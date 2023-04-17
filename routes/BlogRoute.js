@@ -1,4 +1,4 @@
-module.exports = (server, BlogController, BlogValidator) => {
+module.exports = (server, BlogController, BlogValidator, CommonValidator) => {
     const router = require("express").Router();
 
     const setup = () => {
@@ -25,6 +25,7 @@ module.exports = (server, BlogController, BlogValidator) => {
         );
         router.post(
             "/",
+            CommonValidator.token_verification,
             BlogValidator.blog_create,
             BlogController.blog_create
         );

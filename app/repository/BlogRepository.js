@@ -9,7 +9,7 @@
 
 module.exports = (Blog) => {
 
-    const DOCUMENTS_PER_PAGE = 5;
+    const DOCUMENTS_PER_PAGE = 50;
 
     const getAll = ({ page = 0, projection } = {}) => {
         return new Promise((resolve, reject) => {
@@ -69,7 +69,6 @@ module.exports = (Blog) => {
                 .select("-__v")
                 .exec()
                 .then(docs => {
-                    console.log(docs);
                     if (!docs)
                         return reject({
                             status: false,

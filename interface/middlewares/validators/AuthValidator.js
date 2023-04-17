@@ -13,7 +13,12 @@ module.exports = (Validator) => {
             .exists().withMessage("password required").bail()
             .notEmpty().withMessage("password is empty").bail()
             .isLength({ min: 8 }).withMessage("password must be 8 characters or more").bail()
-            .isLength({ max: 64 }).withMessage("password must be less than 64 characters")
+            .isLength({ max: 64 }).withMessage("password must be less than 64 characters"),
+        body("remember")
+            .exists().withMessage("Missing remember me field").bail()
+            .notEmpty().withMessage("Missing remember me field").bail()
+            .isBoolean().withMessage("remember must be either true or false").bail()
+            .toBoolean()
     ]);
 
     const auth_logout_refresh = Validator([

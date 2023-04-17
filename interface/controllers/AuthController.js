@@ -3,8 +3,9 @@ module.exports = (AuthService) => {
     const auth_login = async (req, res) => {
         try {
             const response = await AuthService.auth_login(req.body);
+            if (!response.message.refreshToken)
+                return res.json({ ...response.message });
             const { refreshToken, ...result } = response.message;
-            // Experimental, set cookie max-age for 1 day
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 maxAge: 1 * 24 * 60 * 60 * 1000

@@ -24,7 +24,8 @@ module.exports = (BlogService) => {
 
     const blog_create = async (req, res) => {
         try {
-            const result = await BlogService.createBlog(req.body);
+            const blogData = { ...req.body, author: req.user.username };
+            const result = await BlogService.createBlog(blogData);
             return res.status(201).json({ ...result });
         }
         catch (err) {
