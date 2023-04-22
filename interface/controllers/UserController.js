@@ -22,7 +22,26 @@ module.exports = (UserService) => {
         try {
             const response = await UserService.updateUser(req.user.sub, req.body);
             res.json({ ...response });
-        } catch(err) {
+        } catch (err) {
+            res.status(400).json(err);
+        }
+    };
+
+    const user_avatar = async (req, res) => {
+        const { user } = req.params;
+        try {
+            const response = await UserService.getAvatar(user);
+            res.json({ ...response });
+        } catch (err) {
+            res.status(400).json(err);
+        }
+    };
+
+    const user_avatar_upload = async (req, res) => {
+        try {
+            const response = await UserService.uploadAvatar(req.user.sub, req.file.filename);
+            res.json({ ...response });
+        } catch (err) {
             res.status(400).json(err);
         }
     };
@@ -30,6 +49,8 @@ module.exports = (UserService) => {
     return {
         user_create,
         user_delete,
-        user_update
+        user_update,
+        user_avatar,
+        user_avatar_upload
     };
 };

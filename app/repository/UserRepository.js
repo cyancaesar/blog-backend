@@ -70,6 +70,31 @@ module.exports = (User) => {
         });
     };
 
+    const getById = (username) => {
+        return new Promise((resolve, reject) => {
+            User.findOne({ username })
+                .select("avatar")
+                .exec()
+                .then(doc => {
+                    if (!doc)
+                        return reject({
+                            status: false,
+                            message: "User not found."
+                        });
+                    return resolve({
+                        status: true,
+                        message: doc
+                    });
+                })
+                .catch(() => {
+                    return reject({
+                        status: false,
+                        message: "Error while fetching user by id."
+                    });
+                });
+        });
+    };
+
     const update = (id, data) => {
         return new Promise((resolve, reject) => {
             User.findOne({ _id: id }).then(doc => {
@@ -103,6 +128,7 @@ module.exports = (User) => {
         create,
         deleteById,
         getByUsername,
+        getById,
         update
     };
 

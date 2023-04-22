@@ -36,10 +36,20 @@ module.exports = (UserRepository) => {
         return UserRepository.update(id, data);
     };
 
+    const getAvatar = (id) => {
+        return UserRepository.getById(id);
+    };
+
+    const uploadAvatar = (id, data) => {
+        return UserRepository.update(id, { avatar: data });
+    };
+
     return {
         createUser,
         deleteUser,
-        updateUser
+        updateUser,
+        getAvatar,
+        uploadAvatar
     };
 
 };

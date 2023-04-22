@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "default"
+    },
+    avatar: {
+        type: String,
+        default: "none"
     }
 });
 

@@ -15,7 +15,7 @@ module.exports = () => {
             let error = errors.errors.map(o => o.msg);
             res.status(400).json({
                 status: false,
-                message: error
+                message: error.toString()
             });
         };
     };

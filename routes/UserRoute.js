@@ -1,4 +1,4 @@
-module.exports = (server, UserController, UserValidator, CommonValidator) => {
+module.exports = (server, UserController, UserValidator, CommonValidator, FileUpload) => {
     const router = require("express").Router();
 
     const setup = () => {
@@ -25,6 +25,18 @@ module.exports = (server, UserController, UserValidator, CommonValidator) => {
             CommonValidator.token_verification,
             UserValidator.user_update,
             UserController.user_update
+        );
+
+        router.get(
+            "/profile/:user",
+            UserController.user_avatar
+        );
+
+        router.post(
+            "/profile",
+            CommonValidator.token_verification,
+            FileUpload.single("avatar"),
+            UserController.user_avatar_upload
         );
 
         server.setRoute(routePath, router);

@@ -1,5 +1,6 @@
 module.exports = (config) => {
 
+    const path = require("path");
     const http = require("http");
     const express = require("express");
     const app = express();
@@ -14,7 +15,8 @@ module.exports = (config) => {
             origin: "http://localhost:3000",
             credentials: true
         }));
-        
+        app.use(express.static(path.join(__dirname, "../../public")));
+
         // Handle malformed JSON payload
         app.use((err, req, res, next) => {
             if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
@@ -25,7 +27,13 @@ module.exports = (config) => {
         });
     };
 
-    const setRoute = (path, router) => app.use(path, router);
+    const setRoute = (path, router) => {
+        if (path !== "*") {
+            app.use(`/api${path}`, router);
+            return;
+        }
+        app.use(path, router);
+    };
 
     // Start listening
     const start = () => {

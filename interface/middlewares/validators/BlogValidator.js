@@ -1,5 +1,6 @@
 module.exports = (Validator) => {
     const { body, oneOf, param, query } = require("express-validator");
+    const writePrivilege = ["author", "admin"];
 
     const blog_index = Validator([
         query("p")
@@ -24,7 +25,14 @@ module.exports = (Validator) => {
         body("title")
             .notEmpty().withMessage("title is required").bail(),
         body("content")
-            .notEmpty().withMessage("content is required")
+            .notEmpty().withMessage("content is required").bail(),
+        body()
+            .custom((value, { req }) => {
+                console.log(req.user);
+                if (!req.user) return Promise.reject("Not authenticated");
+                if (!writePrivilege.includes(req.user.role)) return Promise.reject("Insufficient permission");
+                return true;
+            })
     ]);
 
     const blog_delete = Validator([

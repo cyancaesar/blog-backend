@@ -1,6 +1,7 @@
 module.exports = (() => {
     const fs = require("fs");
     const path = require("path");
+    const express = require("express");
 
     const resolveRoutes = (container) => {
         fs.readdirSync(path.join(__dirname, "../routes"))
@@ -13,11 +14,9 @@ module.exports = (() => {
                 }
             });
 
-        // Not found redirection
+        // Redirect to frontend build
         console.log("[Route setup] *");
-        container.cradle.server.setRoute("*", (req, res) => {
-            res.status(404).json({ message: "requested url doesn't exist" });
-        });
+        container.cradle.server.setRoute("*", express.static(path.join(__dirname, "./../client/build")));
     };
 
     return {
